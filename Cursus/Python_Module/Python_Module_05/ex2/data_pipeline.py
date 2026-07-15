@@ -83,7 +83,6 @@ class DataStream:
 
 
 class CSVPlugin:
-    
     """Export plugin that prints data as a comma-separated list."""
     def process_output(self, data: list[tuple[int, str]]) -> None:
         """Print the values of data as a CSV-style line."""

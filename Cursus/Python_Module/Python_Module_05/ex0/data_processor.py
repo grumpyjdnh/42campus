@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, List, Tuple
+from typing import Any, List, Tuple, Sequence
 
 
 # Abstract base class
@@ -38,7 +38,7 @@ class NumericProcessor(DataProcessor):
 
     def ingest(
             self,
-            data: int | float | list[int | float]
+            data: int | float | Sequence[int | float]
             ) -> None:
         """Validate and store numeric data as strings."""
         if not self.validate(data):
@@ -123,7 +123,7 @@ if __name__ == "__main__":
         num_processor.ingest("foo")
     except Exception as e:
         print(f"Got exception: {e}")
-    list_nums = [1, None, 3, 4, 5]
+    list_nums = [1, 2, 3, 4, 5]
     try:
         num_processor.ingest(list_nums)
     except Exception as e:
