@@ -1,10 +1,7 @@
-"""scope_mysteries.py: lexical scoping and closures in the Memory Depths."""
-
 from collections.abc import Callable
 
 
 def mage_counter() -> Callable:
-    """Return a closure that counts how many times it has been called."""
     count = 0
 
     def increment() -> int:
@@ -16,7 +13,6 @@ def mage_counter() -> Callable:
 
 
 def spell_accumulator(initial_power: int) -> Callable:
-    """Return a closure that accumulates power across calls."""
     total = initial_power
 
     def add_power(amount: int) -> int:
@@ -28,7 +24,6 @@ def spell_accumulator(initial_power: int) -> Callable:
 
 
 def enchantment_factory(enchantment_type: str) -> Callable:
-    """Return a closure that applies a fixed enchantment to any item."""
 
     def enchant(item_name: str) -> str:
         return f"{enchantment_type} {item_name}"
@@ -37,7 +32,6 @@ def enchantment_factory(enchantment_type: str) -> Callable:
 
 
 def memory_vault() -> dict[str, Callable]:
-    """Return a closure-backed key/value store with store/recall."""
     memories: dict[str, object] = {}
 
     def store(key: str, value: object) -> None:
@@ -50,7 +44,6 @@ def memory_vault() -> dict[str, Callable]:
 
 
 def main() -> None:
-    """Demonstrate every closure guarded in the Memory Depths."""
     print("Testing mage counter...")
     counter_a = mage_counter()
     counter_b = mage_counter()

@@ -115,16 +115,20 @@ def main() -> None:
     print("Space Mission Crew Validation")
     print("=" * 40)
 
-    mission = SpaceMission(
-        mission_id="M2024_MARS",
-        mission_name="Mars Colony Establishment",
-        destination="Mars",
-        launch_date="2024-06-01T09:00:00",
-        duration_days=900,
-        budget_millions=2500.0,
-        crew=build_valid_crew(),
-    )
-    display_mission(mission)
+    try:
+        mission = SpaceMission(
+            mission_id="M2024_MARS",
+            mission_name="Mars Colony Establishment",
+            destination="Mars",
+            launch_date=datetime(2024, 6, 1, 9, 0, 0),
+            duration_days=900,
+            budget_millions=2500.0,
+            crew=build_valid_crew(),
+        )
+        display_mission(mission)
+    except ValidationError as error:
+        print("Unexpected validation error:")
+        print(first_error_message(error))
 
     print()
     print("=" * 40)
@@ -134,7 +138,7 @@ def main() -> None:
             mission_id="M2024_FAIL",
             mission_name="Doomed Expedition",
             destination="Europa",
-            launch_date="2024-07-01T09:00:00",
+            launch_date=datetime(2024, 7, 1, 9, 0, 0),
             duration_days=200,
             budget_millions=500.0,
             crew=[

@@ -34,15 +34,19 @@ def main() -> None:
     print("Space Station Data Validation")
     print("=" * 40)
 
-    station = SpaceStation(
-        station_id="ISS001",
-        name="International Space Station",
-        crew_size=6,
-        power_level=85.5,
-        oxygen_level=92.3,
-        last_maintenance=datetime(2026, 4, 25, 14, 30, 0),
-    )
-    display_station(station)
+    try:
+        station = SpaceStation(
+            station_id="ISS001",
+            name="International Space Station",
+            crew_size=2,
+            power_level=85.5,
+            oxygen_level=92.3,
+            last_maintenance=datetime(2026, 4, 25, 14, 30, 0),
+        )
+        display_station(station)
+    except ValidationError as error:
+        print("Unexpected validation error:")
+        print(first_error_message(error))
 
     print()
     print("=" * 40)
@@ -51,7 +55,7 @@ def main() -> None:
         SpaceStation(
             station_id="ISS002",
             name="Overcrowded Station",
-            crew_size=25,
+            crew_size=80,
             power_level=80.0,
             oxygen_level=90.0,
             last_maintenance=datetime(2026, 4, 25, 14, 30, 0),

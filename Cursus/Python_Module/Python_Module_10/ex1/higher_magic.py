@@ -1,9 +1,3 @@
-"""higher_magic.py: higher-order functions in the Higher Realm.
-
-Every spell in this file follows the shared contract:
-    def spell(target: str, power: int) -> str
-"""
-
 from collections.abc import Callable
 
 
@@ -60,7 +54,6 @@ def spell_sequence(spells: list[Callable]) -> Callable:
 
 
 def main() -> None:
-    """Demonstrate every higher-order spell modifier."""
     print("Testing spell combiner...")
     combined = spell_combiner(fireball, heal)
     fire_result, heal_result = combined("Dragon", 20)

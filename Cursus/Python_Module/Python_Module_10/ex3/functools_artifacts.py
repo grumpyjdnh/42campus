@@ -1,5 +1,3 @@
-"""functools_artifacts.py: functools treasures in the Ancient Library."""
-
 import operator
 from collections.abc import Callable
 from functools import lru_cache, partial, reduce, singledispatch
@@ -24,11 +22,6 @@ def spell_reducer(spells: list[int], operation: str) -> int:
 
 
 def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
-    """Create 3 specialized enchantments via functools.partial.
-
-    Each one pre-fills power=50 and a fixed element, leaving only the
-    target to be supplied later.
-    """
     return {
         "fire": partial(base_enchantment, power=50, element="fire"),
         "ice": partial(base_enchantment, power=50, element="ice"),
@@ -40,15 +33,12 @@ def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
 
 @lru_cache(maxsize=None)
 def memoized_fibonacci(n: int) -> int:
-    """Return the nth Fibonacci number, memoized via functools.lru_cache."""
     if n < 2:
         return n
     return memoized_fibonacci(n - 1) + memoized_fibonacci(n - 2)
 
 
 def spell_dispatcher() -> Callable[[Any], str]:
-    """Build a functools.singledispatch spell system and return it."""
-
     @singledispatch
     def cast(spell: Any) -> str:
         return "Unknown spell type"
@@ -69,7 +59,6 @@ def spell_dispatcher() -> Callable[[Any], str]:
 
 
 def main() -> None:
-    """Demonstrate every functools artifact in the Ancient Library."""
     spells = [10, 20, 30, 40]
     print("Testing spell reducer...")
     print(f"Sum: {spell_reducer(spells, 'add')}")
