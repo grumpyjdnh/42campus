@@ -4,7 +4,7 @@ from functools import wraps
 from typing import Any
 
 
-def spell_timer(func: Callable) -> Callable:
+def spell_timer(func: Callable[..., Any]) -> Callable[..., Any]:
     @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         print(f"Casting {func.__name__}...")
@@ -17,8 +17,10 @@ def spell_timer(func: Callable) -> Callable:
     return wrapper
 
 
-def power_validator(min_power: int) -> Callable:
-    def decorator(func: Callable) -> Callable:
+def power_validator(
+    min_power: int,
+) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             power = kwargs.get("power", args[-1] if args else 0)
@@ -31,8 +33,10 @@ def power_validator(min_power: int) -> Callable:
     return decorator
 
 
-def retry_spell(max_attempts: int) -> Callable:
-    def decorator(func: Callable) -> Callable:
+def retry_spell(
+    max_attempts: int,
+) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             for attempt in range(1, max_attempts + 1):
