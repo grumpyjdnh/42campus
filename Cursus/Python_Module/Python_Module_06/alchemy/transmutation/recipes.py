@@ -1,12 +1,5 @@
-"""Recipes: transmute lead into gold with air, fire and a strength potion.
-
-Demonstrates both an absolute import (alchemy.elements) and a relative
-import (..potions) reaching into the rest of the alchemy package.
-"""
-
 from alchemy.elements import create_air
 from elements import create_fire
-
 from ..potions import strength_potion
 
 

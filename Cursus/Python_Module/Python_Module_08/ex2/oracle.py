@@ -1,5 +1,3 @@
-"""oracle.py: load configuration from environment variables / .env."""
-
 import os
 
 try:
@@ -26,14 +24,12 @@ DEFAULTS = {
 
 
 def load_configuration() -> dict[str, str]:
-    """Load .env (if present) then read every configuration variable."""
     if load_dotenv is not None:
         load_dotenv()
     return {key: os.environ.get(key, DEFAULTS[key]) for key in REQUIRED_KEYS}
 
 
 def describe_database(url: str) -> str:
-    """Summarize a database connection string without leaking secrets."""
     if not url:
         return "Not configured"
     if "localhost" in url or url.startswith("sqlite"):
@@ -42,17 +38,14 @@ def describe_database(url: str) -> str:
 
 
 def describe_api(api_key: str) -> str:
-    """Report whether an API key is present, without printing it."""
     return "Authenticated" if api_key else "Missing API_KEY!"
 
 
 def describe_zion(endpoint: str) -> str:
-    """Report the resistance network status."""
     return "Online" if endpoint else "Offline (no endpoint configured)"
 
 
 def print_configuration(config: dict[str, str]) -> None:
-    """Print the loaded configuration, without leaking the API key."""
     print("Configuration loaded:")
     print(f"Mode: {config['MATRIX_MODE']}")
     print(f"Database: {describe_database(config['DATABASE_URL'])}")
@@ -64,7 +57,6 @@ def print_configuration(config: dict[str, str]) -> None:
 def print_security_check(
     config: dict[str, str], env_file_found: bool
 ) -> None:
-    """Report a few basic environment-hygiene checks."""
     print("Environment security check:")
     if config["API_KEY"] and config["API_KEY"] != DEFAULTS["API_KEY"]:
         print("[OK] No hardcoded secrets detected")
@@ -81,7 +73,6 @@ def print_security_check(
 
 
 def main() -> None:
-    """Read the Matrix configuration and report its status."""
     print("ORACLE STATUS: Reading the Matrix...")
     print()
     try:

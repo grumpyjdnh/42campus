@@ -1,6 +1,3 @@
-"""Kaboom 1: secretly reach dark_spellbook.py and trigger the explosion."""
-
-
 def main() -> None:
     """Trigger the dark grimoire's circular import explosion."""
     print("=== Kaboom 1 ===")

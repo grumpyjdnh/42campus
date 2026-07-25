@@ -1,5 +1,3 @@
-"""Alembic 5: import the alchemy module with 'from alchemy import ...'."""
-
 from alchemy import create_air
 
 

@@ -1,10 +1,7 @@
-"""battle.py: exercises the ex0 abstract factory pattern."""
-
 from ex0 import AquaFactory, CreatureFactory, FlameFactory
 
 
 def test_factory(factory: CreatureFactory) -> None:
-    """Create, describe and attack with both forms of a family."""
     print("Testing factory")
     base = factory.create_base()
     print(base.describe())
@@ -17,7 +14,6 @@ def test_factory(factory: CreatureFactory) -> None:
 def test_battle(
     factory_a: CreatureFactory, factory_b: CreatureFactory
 ) -> None:
-    """Make the base Creature of two families fight each other."""
     print("Testing battle")
     creature_a = factory_a.create_base()
     creature_b = factory_b.create_base()
@@ -30,7 +26,6 @@ def test_battle(
 
 
 def main() -> None:
-    """Run the factory and battle scenarios."""
     flame_factory = FlameFactory()
     aqua_factory = AquaFactory()
     test_factory(flame_factory)

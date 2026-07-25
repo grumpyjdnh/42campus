@@ -1,5 +1,3 @@
-"""Kaboom 0: use the grimoire module directly, no explosion."""
-
 import alchemy.grimoire
 
 

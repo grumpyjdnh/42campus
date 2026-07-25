@@ -1,15 +1,12 @@
 [tool.poetry]
-name = "loading"
+name = "matrix-loading"
 version = "0.1.0"
-description = "Matrix data loading exercise (Module 8, ex1)"
-authors = ["Data Architect <architect@zion.local>"]
+description = "Loading programs into the construct"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.10"
+pandas = "^2.1.0"
 numpy = ">=1.24"
-pandas = ">=2.0"
-matplotlib = ">=3.7"
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+matplotlib = "^3.7.2"
+python-dotenv = "^1.2.2"

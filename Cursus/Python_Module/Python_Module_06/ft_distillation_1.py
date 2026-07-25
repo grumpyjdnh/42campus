@@ -1,5 +1,3 @@
-"""Distillation 1: import alchemy, then use its potion interface."""
-
 import alchemy
 
 

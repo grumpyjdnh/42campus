@@ -195,17 +195,17 @@ if __name__ == "__main__":
         try:
             num_processor.output()
         except IndexError as e:
-            print(f"No hay más datos numéricos para extraer: {e}")
+            print(f"There is no more data to extract: {e}")
             break
     for _ in range(2):
         try:
             text_processor.output()
         except IndexError as e:
-            print(f"No hay más datos de texto para extraer: {e}")
+            print(f"There is no more data to extract: {e}")
             break
     try:
         log_processor.output()
     except IndexError as e:
-        print(f"No hay más logs para extraer: {e}")
+        print(f"There is no more data to extract: {e}")
 
     data_stream.print_processors_stats()

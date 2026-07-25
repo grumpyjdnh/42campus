@@ -1,5 +1,3 @@
-"""Alembic 3: reach alchemy/elements.py with 'from ... import ...'."""
-
 from alchemy.elements import create_air
 
 

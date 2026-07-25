@@ -1,5 +1,3 @@
-"""tournament.py: exercises the ex2 abstract strategy pattern."""
-
 from ex0 import AquaFactory, CreatureFactory, FlameFactory
 from ex1 import HealingCreatureFactory, TransformCreatureFactory
 from ex2 import (
@@ -14,7 +12,6 @@ Opponent = tuple[CreatureFactory, BattleStrategy]
 
 
 def battle(opponents: list[Opponent]) -> None:
-    """Make every opponent fight every other opponent, exactly once."""
     print("*** Tournament ***")
     print(f"{len(opponents)} opponents involved")
     creatures = [
@@ -37,7 +34,6 @@ def battle(opponents: list[Opponent]) -> None:
 
 
 def main() -> None:
-    """Run three tournament scenarios: basic, error, and multiple."""
     flame_factory = FlameFactory()
     aqua_factory = AquaFactory()
     healing_factory = HealingCreatureFactory()

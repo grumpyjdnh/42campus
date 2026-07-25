@@ -1,10 +1,7 @@
-"""capacitor.py: exercises the ex1 healing and transform capabilities."""
-
 from ex1 import HealingCreatureFactory, TransformCreatureFactory
 
 
 def test_healing(factory: HealingCreatureFactory) -> None:
-    """Describe, attack, then heal both the base and evolved Creature."""
     print("Testing Creature with healing capability")
     print("base:")
     base = factory.create_base()
@@ -19,7 +16,6 @@ def test_healing(factory: HealingCreatureFactory) -> None:
 
 
 def test_transform(factory: TransformCreatureFactory) -> None:
-    """Describe, attack, transform, attack again, then revert."""
     print("Testing Creature with transform capability")
     print("base:")
     base = factory.create_base()
@@ -38,7 +34,6 @@ def test_transform(factory: TransformCreatureFactory) -> None:
 
 
 def main() -> None:
-    """Run both capability scenarios."""
     test_healing(HealingCreatureFactory())
     print()
     test_transform(TransformCreatureFactory())

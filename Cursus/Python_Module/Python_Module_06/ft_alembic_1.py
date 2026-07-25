@@ -1,5 +1,3 @@
-"""Alembic 1: reach elements.py directly with 'from ... import ...'."""
-
 from elements import create_water
 
 

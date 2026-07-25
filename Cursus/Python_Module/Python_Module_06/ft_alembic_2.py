@@ -1,5 +1,3 @@
-"""Alembic 2: reach alchemy/elements.py directly with 'import ...'."""
-
 import alchemy.elements
 
 
