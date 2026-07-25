@@ -1,13 +1,9 @@
-"""space_crew.py: nested Pydantic v2 models for space mission crews."""
-
 from datetime import datetime
 from enum import Enum
-
 from pydantic import BaseModel, Field, ValidationError, model_validator
 
 
 class Rank(str, Enum):
-    """Military-style rank of a crew member."""
 
     CADET = "cadet"
     OFFICER = "officer"
@@ -17,7 +13,6 @@ class Rank(str, Enum):
 
 
 class CrewMember(BaseModel):
-    """A single, validated crew member."""
 
     member_id: str = Field(..., min_length=3, max_length=10)
     name: str = Field(..., min_length=2, max_length=50)
@@ -29,8 +24,6 @@ class CrewMember(BaseModel):
 
 
 class SpaceMission(BaseModel):
-    """A mission, with a validated crew roster (a nested model list)."""
-
     mission_id: str = Field(..., min_length=5, max_length=15)
     mission_name: str = Field(..., min_length=3, max_length=100)
     destination: str = Field(..., min_length=3, max_length=50)
@@ -42,12 +35,6 @@ class SpaceMission(BaseModel):
 
     @model_validator(mode="after")
     def check_safety_rules(self) -> "SpaceMission":
-        """Enforce mission-wide safety rules across the whole crew.
-
-        Note: if a CrewMember in the input data is itself invalid,
-        Pydantic rejects it (and reports it) while building the list,
-        before this mission-level validator ever runs.
-        """
         if not self.mission_id.startswith("M"):
             raise ValueError("Mission ID must start with 'M'")
 
@@ -74,19 +61,12 @@ class SpaceMission(BaseModel):
 
 
 def first_error_message(error: ValidationError) -> str:
-    """Return the first validation error's message, stripped of noise.
-
-    Pydantic prefixes messages raised from @model_validator functions
-    with "Value error, "; every error surfaced by this file comes from
-    check_safety_rules, so we always strip that prefix here.
-    """
     message = error.errors()[0]["msg"]
     prefix = "Value error, "
     return message.removeprefix(prefix)
 
 
 def display_mission(mission: SpaceMission) -> None:
-    """Print a mission's key details and its crew roster."""
     print("Valid mission created:")
     print(f"Mission: {mission.mission_name}")
     print(f"ID: {mission.mission_id}")
@@ -103,7 +83,6 @@ def display_mission(mission: SpaceMission) -> None:
 
 
 def build_valid_crew() -> list[CrewMember]:
-    """Build a small, valid crew: a commander plus two officers."""
     return [
         CrewMember(
             member_id="CM001",
@@ -133,7 +112,6 @@ def build_valid_crew() -> list[CrewMember]:
 
 
 def main() -> None:
-    """Demonstrate a valid mission and an invalid one."""
     print("Space Mission Crew Validation")
     print("=" * 40)
 
@@ -159,7 +137,6 @@ def main() -> None:
             launch_date="2024-07-01T09:00:00",
             duration_days=200,
             budget_millions=500.0,
-            # No Commander or Captain in this crew -> should fail.
             crew=[
                 CrewMember(
                     member_id="CM010",
