@@ -34,6 +34,10 @@ class AlienContact(BaseModel):
             and self.witness_count < 3
         ):
             raise ValueError(
+<<<<<<< HEAD
+=======
+                "Telepathic contact requires at least 3 witnesses",
+>>>>>>> refs/remotes/origin/main
             )
 
         if self.signal_strength > 7.0 and not self.message_received:
@@ -52,7 +56,7 @@ def first_error_message(error: ValidationError) -> str:
 
 def display_contact(contact: AlienContact) -> None:
     print("Valid contact report:")
-    print(f"ID: {contact.contact_id}")
+    print("ID:", contact.contact_id)
     print(f"Type: {contact.contact_type.value}")
     print(f"Location: {contact.location}")
     print(f"Signal: {contact.signal_strength}/10")
@@ -66,17 +70,21 @@ def main() -> None:
     print("Alien Contact Log Validation")
     print("=" * 40)
 
-    contact = AlienContact(
-        contact_id="AC_2024_001",
-        timestamp="2024-03-10T22:15:00",
-        location="Area 51, Nevada",
-        contact_type=ContactType.RADIO,
-        signal_strength=8.5,
-        duration_minutes=45,
-        witness_count=5,
-        message_received="Greetings from Zeta Reticuli",
-    )
-    display_contact(contact)
+    try:
+        contact = AlienContact(
+            contact_id="AC_2024_001",
+            timestamp=datetime(2024, 3, 10, 22, 15, 0),
+            location="Area 51, Nevada",
+            contact_type=ContactType.RADIO,
+            signal_strength=8.5,
+            duration_minutes=45,
+            witness_count=5,
+            message_received="Greetings from Zeta Reticuli",
+        )
+        display_contact(contact)
+    except ValidationError as error:
+        print("Unexpected validation error:")
+        print(first_error_message(error))
 
     print()
     print("=" * 40)
@@ -84,7 +92,7 @@ def main() -> None:
     try:
         AlienContact(
             contact_id="AC_2024_002",
-            timestamp="2024-03-11T03:00:00",
+            timestamp=datetime(2024, 3, 11, 3, 0, 0),
             location="Roswell, New Mexico",
             contact_type=ContactType.TELEPATHIC,
             signal_strength=6.0,

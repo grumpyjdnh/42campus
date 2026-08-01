@@ -1,15 +1,12 @@
-"""decorator_mastery.py: decorators and staticmethod in the Master's Tower."""
-
 import time
 from collections.abc import Callable
 from functools import wraps
+from typing import Any
 
 
-def spell_timer(func: Callable) -> Callable:
-    """Time how long a spell takes to cast."""
-
+def spell_timer(func: Callable[..., Any]) -> Callable[..., Any]:
     @wraps(func)
-    def wrapper(*args: object, **kwargs: object) -> object:
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         print(f"Casting {func.__name__}...")
         start = time.perf_counter()
         result = func(*args, **kwargs)
@@ -20,17 +17,12 @@ def spell_timer(func: Callable) -> Callable:
     return wrapper
 
 
-def power_validator(min_power: int) -> Callable:
-    """Only run the decorated spell if its power meets the minimum.
-
-    By the shared spell contract, power is always the last positional
-    argument -- (target, power) for standalone spells, and
-    (self, spell_name, power) for MageGuild.cast_spell.
-    """
-
-    def decorator(func: Callable) -> Callable:
+def power_validator(
+    min_power: int,
+) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
-        def wrapper(*args: object, **kwargs: object) -> object:
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             power = kwargs.get("power", args[-1] if args else 0)
             if power < min_power:
                 return "Insufficient power for this spell"
@@ -41,12 +33,12 @@ def power_validator(min_power: int) -> Callable:
     return decorator
 
 
-def retry_spell(max_attempts: int) -> Callable:
-    """Retry a failing spell up to max_attempts times."""
-
-    def decorator(func: Callable) -> Callable:
+def retry_spell(
+    max_attempts: int,
+) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
-        def wrapper(*args: object, **kwargs: object) -> object:
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             for attempt in range(1, max_attempts + 1):
                 try:
                     return func(*args, **kwargs)
@@ -65,8 +57,6 @@ def retry_spell(max_attempts: int) -> Callable:
 
 
 class MageGuild:
-    """A guild that validates mage names and casts member spells."""
-
     @staticmethod
     def validate_mage_name(name: str) -> bool:
         """A valid mage name is 3+ characters of letters and spaces only."""
@@ -76,12 +66,10 @@ class MageGuild:
 
     @power_validator(min_power=10)
     def cast_spell(self, spell_name: str, power: int) -> str:
-        """Cast a spell if this guild member has enough power."""
         return f"Successfully cast {spell_name} with {power} power"
 
 
 def main() -> None:
-    """Demonstrate every decorator and static method in the Tower."""
     print("Testing spell timer...")
 
     @spell_timer

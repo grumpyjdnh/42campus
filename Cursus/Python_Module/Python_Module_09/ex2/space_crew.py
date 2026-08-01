@@ -1,13 +1,9 @@
-"""space_crew.py: nested Pydantic v2 models for space mission crews."""
-
 from datetime import datetime
 from enum import Enum
-
 from pydantic import BaseModel, Field, ValidationError, model_validator
 
 
 class Rank(str, Enum):
-    """Military-style rank of a crew member."""
 
     CADET = "cadet"
     OFFICER = "officer"
@@ -17,7 +13,6 @@ class Rank(str, Enum):
 
 
 class CrewMember(BaseModel):
-    """A single, validated crew member."""
 
     member_id: str = Field(..., min_length=3, max_length=10)
     name: str = Field(..., min_length=2, max_length=50)
@@ -29,8 +24,6 @@ class CrewMember(BaseModel):
 
 
 class SpaceMission(BaseModel):
-    """A mission, with a validated crew roster (a nested model list)."""
-
     mission_id: str = Field(..., min_length=5, max_length=15)
     mission_name: str = Field(..., min_length=3, max_length=100)
     destination: str = Field(..., min_length=3, max_length=50)
@@ -42,12 +35,6 @@ class SpaceMission(BaseModel):
 
     @model_validator(mode="after")
     def check_safety_rules(self) -> "SpaceMission":
-        """Enforce mission-wide safety rules across the whole crew.
-
-        Note: if a CrewMember in the input data is itself invalid,
-        Pydantic rejects it (and reports it) while building the list,
-        before this mission-level validator ever runs.
-        """
         if not self.mission_id.startswith("M"):
             raise ValueError("Mission ID must start with 'M'")
 
@@ -128,16 +115,20 @@ def main() -> None:
     print("Space Mission Crew Validation")
     print("=" * 40)
 
-    mission = SpaceMission(
-        mission_id="M2024_MARS",
-        mission_name="Mars Colony Establishment",
-        destination="Mars",
-        launch_date="2024-06-01T09:00:00",
-        duration_days=900,
-        budget_millions=2500.0,
-        crew=build_valid_crew(),
-    )
-    display_mission(mission)
+    try:
+        mission = SpaceMission(
+            mission_id="M2024_MARS",
+            mission_name="Mars Colony Establishment",
+            destination="Mars",
+            launch_date=datetime(2024, 6, 1, 9, 0, 0),
+            duration_days=900,
+            budget_millions=2500.0,
+            crew=build_valid_crew(),
+        )
+        display_mission(mission)
+    except ValidationError as error:
+        print("Unexpected validation error:")
+        print(first_error_message(error))
 
     print()
     print("=" * 40)
@@ -147,7 +138,7 @@ def main() -> None:
             mission_id="M2024_FAIL",
             mission_name="Doomed Expedition",
             destination="Europa",
-            launch_date="2024-07-01T09:00:00",
+            launch_date=datetime(2024, 7, 1, 9, 0, 0),
             duration_days=200,
             budget_millions=500.0,
             crew=[

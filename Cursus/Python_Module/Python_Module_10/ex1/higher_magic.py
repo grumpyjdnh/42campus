@@ -1,10 +1,6 @@
-"""higher_magic.py: higher-order functions in the Higher Realm.
-
-Every spell in this file follows the shared contract:
-    def spell(target: str, power: int) -> str
-"""
-
 from collections.abc import Callable
+
+Spell = Callable[[str, int], str]
 
 
 def fireball(target: str, power: int) -> str:
@@ -17,7 +13,9 @@ def heal(target: str, power: int) -> str:
     return f"Heals {target} for {power} HP"
 
 
-def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
+def spell_combiner(
+    spell1: Spell, spell2: Spell
+) -> Callable[[str, int], tuple[str, str]]:
     """Combine two spells: cast both, return a tuple of both results."""
     if not callable(spell1) or not callable(spell2):
         raise TypeError("spell_combiner requires two callable spells")
@@ -28,7 +26,7 @@ def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
     return combined
 
 
-def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
+def power_amplifier(base_spell: Spell, multiplier: int) -> Spell:
     """Return a spell that multiplies power before casting."""
 
     def amplified(target: str, power: int) -> str:
@@ -37,7 +35,9 @@ def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
     return amplified
 
 
-def conditional_caster(condition: Callable, spell: Callable) -> Callable:
+def conditional_caster(
+    condition: Callable[[str, int], bool], spell: Spell
+) -> Spell:
     """Return a spell that only casts when the condition holds."""
 
     def maybe_cast(target: str, power: int) -> str:
@@ -48,7 +48,9 @@ def conditional_caster(condition: Callable, spell: Callable) -> Callable:
     return maybe_cast
 
 
-def spell_sequence(spells: list[Callable]) -> Callable:
+def spell_sequence(
+    spells: list[Spell],
+) -> Callable[[str, int], list[str]]:
     """Return a spell that casts every spell in the list, in order."""
     if not all(callable(spell) for spell in spells):
         raise TypeError("spell_sequence requires a list of callables")
@@ -60,7 +62,6 @@ def spell_sequence(spells: list[Callable]) -> Callable:
 
 
 def main() -> None:
-    """Demonstrate every higher-order spell modifier."""
     print("Testing spell combiner...")
     combined = spell_combiner(fireball, heal)
     fire_result, heal_result = combined("Dragon", 20)
