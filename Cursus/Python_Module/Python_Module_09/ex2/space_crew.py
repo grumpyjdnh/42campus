@@ -74,19 +74,12 @@ class SpaceMission(BaseModel):
 
 
 def first_error_message(error: ValidationError) -> str:
-    """Return the first validation error's message, stripped of noise.
-
-    Pydantic prefixes messages raised from @model_validator functions
-    with "Value error, "; every error surfaced by this file comes from
-    check_safety_rules, so we always strip that prefix here.
-    """
     message = error.errors()[0]["msg"]
     prefix = "Value error, "
     return message.removeprefix(prefix)
 
 
 def display_mission(mission: SpaceMission) -> None:
-    """Print a mission's key details and its crew roster."""
     print("Valid mission created:")
     print(f"Mission: {mission.mission_name}")
     print(f"ID: {mission.mission_id}")
@@ -103,7 +96,6 @@ def display_mission(mission: SpaceMission) -> None:
 
 
 def build_valid_crew() -> list[CrewMember]:
-    """Build a small, valid crew: a commander plus two officers."""
     return [
         CrewMember(
             member_id="CM001",
@@ -133,7 +125,6 @@ def build_valid_crew() -> list[CrewMember]:
 
 
 def main() -> None:
-    """Demonstrate a valid mission and an invalid one."""
     print("Space Mission Crew Validation")
     print("=" * 40)
 
@@ -159,7 +150,6 @@ def main() -> None:
             launch_date="2024-07-01T09:00:00",
             duration_days=200,
             budget_millions=500.0,
-            # No Commander or Captain in this crew -> should fail.
             crew=[
                 CrewMember(
                     member_id="CM010",

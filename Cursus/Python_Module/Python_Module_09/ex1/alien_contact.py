@@ -1,14 +1,9 @@
-"""alien_contact.py: custom @model_validator rules for contact reports."""
-
 from datetime import datetime
 from enum import Enum
-
 from pydantic import BaseModel, Field, ValidationError, model_validator
 
 
 class ContactType(str, Enum):
-    """The channel through which an alien contact was reported."""
-
     RADIO = "radio"
     VISUAL = "visual"
     PHYSICAL = "physical"
@@ -16,8 +11,6 @@ class ContactType(str, Enum):
 
 
 class AlienContact(BaseModel):
-    """A single, validated alien contact report."""
-
     contact_id: str = Field(..., min_length=5, max_length=15)
     timestamp: datetime
     location: str = Field(..., min_length=3, max_length=100)
@@ -30,7 +23,6 @@ class AlienContact(BaseModel):
 
     @model_validator(mode="after")
     def check_business_rules(self) -> "AlienContact":
-        """Enforce cross-field rules a single Field(...) can't express."""
         if not self.contact_id.startswith("AC"):
             raise ValueError("Contact ID must start with 'AC'")
 
@@ -42,7 +34,6 @@ class AlienContact(BaseModel):
             and self.witness_count < 3
         ):
             raise ValueError(
-                "Telepathic contact requires at least 3 witnesses"
             )
 
         if self.signal_strength > 7.0 and not self.message_received:
@@ -54,19 +45,12 @@ class AlienContact(BaseModel):
 
 
 def first_error_message(error: ValidationError) -> str:
-    """Return the first validation error's message, stripped of noise.
-
-    Pydantic prefixes messages raised from @model_validator functions
-    with "Value error, "; every error surfaced by this file comes from
-    check_business_rules, so we always strip that prefix here.
-    """
     message = error.errors()[0]["msg"]
     prefix = "Value error, "
     return message.removeprefix(prefix)
 
 
 def display_contact(contact: AlienContact) -> None:
-    """Print a contact report's key details."""
     print("Valid contact report:")
     print(f"ID: {contact.contact_id}")
     print(f"Type: {contact.contact_type.value}")
@@ -79,7 +63,6 @@ def display_contact(contact: AlienContact) -> None:
 
 
 def main() -> None:
-    """Demonstrate a valid contact report and an invalid one."""
     print("Alien Contact Log Validation")
     print("=" * 40)
 
@@ -106,7 +89,7 @@ def main() -> None:
             contact_type=ContactType.TELEPATHIC,
             signal_strength=6.0,
             duration_minutes=20,
-            witness_count=1,  # telepathic contact needs 3+ witnesses
+            witness_count=1,
         )
     except ValidationError as error:
         print(first_error_message(error))
